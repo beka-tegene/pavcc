@@ -106,7 +106,7 @@ export const AllIdeas = () => {
               <div>
                 <h2 className="text-lg font-semibold">{item.businessSector}</h2>
                 <p className="text-gray-600">
-                  {item.businessSector} • {item.legalStatus} •{" "}
+                   {item.legalStatus} •{" "}
                   {item.yearsInBusiness} Years in Business
                 </p>
               </div>

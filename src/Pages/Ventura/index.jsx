@@ -8,6 +8,8 @@ import { IdeaDetails } from "./IdeasDetail";
 import { StartProcess } from "./StartProcess";
 import { StartProcessDetail } from "./StartProcessDetail";
 import { RegisterAndPay } from "./Register";
+import { VenturaNotification } from "./VenturaNotification";
+import NotificationDetail from "./NotificationDetail";
 
 export const Ventura = () => {
   return (
@@ -20,6 +22,8 @@ export const Ventura = () => {
         <Route path="start-process/:id" element={<StartProcessDetail />} />
         <Route path="register-pay" element={<RegisterAndPay />} />
         <Route path="setting" element={<Setting />} />
+        <Route path="notifications" element={<VenturaNotification />} />
+        <Route path="notifications/:id" element={<NotificationDetail />} />
       </Routes>
     </Layout>
   );

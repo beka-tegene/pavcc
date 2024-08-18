@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ButtonUi } from "../../../Components/Button";
 
 export const StartedProcessDetail = () => {
@@ -73,28 +73,75 @@ export const StartedProcessDetail = () => {
       },
     ],
   };
+
+  const [popup, setPopup] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+  const [message, setMessage] = useState("");
+
+  const handleButtonClick = (type) => {
+    setSelectedNotification(type);
+    setPopup(true);
+  };
+
+  const handleSendNotification = () => {
+    console.log(`Sending notification to ${selectedNotification}: ${message}`);
+    // Add your notification sending logic here
+    setPopup(false);
+    setMessage("");
+  };
+
   return (
     <div className="p-6">
       <div className="flex justify-end gap-5 relative">
         <ButtonUi
-          label={`Send Notification`}
+          onClick={() => handleButtonClick("Venture Capitalist")}
+          label="To Venture Capitalist"
           type="button"
           className="bg-green-700 text-white px-8 py-2 rounded-lg hover:bg-green-800 font-semibold"
         />
-        <div className="flex flex-col bg-white p-2 absolute top-11 right-0 shadow-lg rounded-md gap-2">
-          <ButtonUi
-            label={`For Venture Capitalist`}
-            type="button"
-            className="hover:bg-[#8a94a5] text-sm hover:text-white px-4 py-2 rounded-lg bg-gray-100 text-[#374151] font-semibold"
-          />
-          <ButtonUi
-            label={`For Interpreter`}
-            type="button"
-            className="hover:bg-[#8a94a5] text-sm hover:text-white px-4 py-2 rounded-lg bg-gray-100 text-[#374151] font-semibold"
-          />
-        </div>
+        <ButtonUi
+          onClick={() => handleButtonClick("Interpreter")}
+          label="To Interpreter"
+          type="button"
+          className="bg-blue-700 text-white px-8 py-2 rounded-lg hover:bg-blue-800 font-semibold"
+        />
       </div>
-      <div key={opportunity.id} className="bg-white shadow rounded-lg p-3 ">
+
+      {popup && (
+        <div className="fixed w-full z-10">
+          <div
+            className="bg-black opacity-50 top-0 right-0 left-0 bottom-0 fixed"
+            onClick={() => setPopup(false)}
+          ></div>
+          <div className="flex flex-col bg-white p-6 fixed top-[50%]  left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-md gap-4 z-20">
+            <h3 className="text-xl font-semibold">
+              Send Notification to {selectedNotification}
+            </h3>
+            <textarea
+              className="w-full h-40 p-2 border border-gray-300 rounded-md resize-none"
+              placeholder="Type your notification message here..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            ></textarea>
+            <div className="flex justify-end gap-4">
+              <ButtonUi
+                onClick={() => setPopup(false)}
+                label="Cancel"
+                type="button"
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+              />
+              <ButtonUi
+                onClick={handleSendNotification}
+                label="Send"
+                type="button"
+                className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div key={opportunity.id} className="bg-white shadow rounded-lg p-3 mt-4">
         <h2 className="text-xl font-semibold mb-2">{opportunity.title}</h2>
         <p className="text-gray-700 mb-4">{opportunity.description}</p>
         <p className="text-gray-900 font-medium mb-2">

@@ -6,6 +6,8 @@ import { Ideas } from "./Ideas";
 import { IdeaDetails } from "./IdeasDetail";
 import { IdeasCreate } from "./IdeasCreate";
 import { Setting } from "./Setting";
+import { EntrepreneurNotification } from "./EntrepreneurNotification";
+import NotificationDetail from "./NotificationDetail";
 
 export const Entrepreneur = () => {
   return (
@@ -16,6 +18,8 @@ export const Entrepreneur = () => {
         <Route path="ideas/create" element={<IdeasCreate />} />
         <Route path="ideas/:id" element={<IdeaDetails />} />
         <Route path="setting" element={<Setting />} />
+        <Route path="notifications" element={<EntrepreneurNotification />} />
+        <Route path="notifications/:id" element={<NotificationDetail />} />
       </Routes>
     </Layout>
   );

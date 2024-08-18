@@ -9,7 +9,7 @@ export const AdminSidebar = () => {
     { path: "/admin/all-ideas", name: "Ideas", icon: FaRegLightbulb },
     { path: "/admin/ideas-approved", name: "Ideas Approved", icon: FaRegLightbulb },
     { path: "/admin/start-process", name: "Started Process", icon: FaChartLine },
-    { path: "/admin/setting", name: "Settings", icon: FaCog },
+    { path: "/admin/profile", name: "Profile", icon: FaCog },
   ];
   return (
     <div className="h-full">

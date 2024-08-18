@@ -6,6 +6,7 @@ import { useState } from "react";
 import { ButtonUi } from "../../../Components/Button";
 import { Textarea } from "../../../Components/Textarea";
 import { CheckboxInput } from "../../../Components/CheckboxInput";
+import axios from "axios";
 const businessSectors = [
   { value: "Agriculture", label: "Agriculture" },
   { value: "Agro-processing", label: "Agro-processing" },
@@ -70,12 +71,6 @@ export const IdeasCreate = () => {
         },
         {
           component: FileInput,
-          label: "Attach Identification Documents",
-          name: "idDocuments",
-          rules: { required: "Identification document is required" },
-        },
-        {
-          component: FileInput,
           label: "Attach Available Legal Documents",
           name: "legalDocuments",
         },
@@ -94,25 +89,25 @@ export const IdeasCreate = () => {
         {
           component: TextInput,
           label: "Revenue Last Three Years (Year 1)",
-          name: "revenueYear1",
+          name: "revenueLastYear1",
           type: "number",
         },
         {
           component: TextInput,
           label: "Revenue Last Three Years (Year 2)",
-          name: "revenueYear2",
+          name: "revenueLastYear2",
           type: "number",
         },
         {
           component: TextInput,
           label: "Revenue Last Three Years (Year 3)",
-          name: "revenueYear3",
+          name: "revenueLastYear3",
           type: "number",
         },
         {
           component: TextInput,
           label: "Number of Existing Employees",
-          name: "employees",
+          name: "employeesExisting",
           type: "number",
         },
       ],
@@ -393,6 +388,13 @@ export const IdeasCreate = () => {
       fields: [
         {
           component: SelectInput,
+          label: "Stage of Investment",
+          name: "investmentStage",
+          options: stagesOfInvestment,
+          rules: { required: "Investment Stage is required" },
+        },
+        {
+          component: SelectInput,
           label: "Type of Funding Requested",
           name: "fundingType",
           options: fundingTypes,
@@ -400,94 +402,128 @@ export const IdeasCreate = () => {
         },
         {
           component: Textarea,
-          label: "Specify Funding Type (if 'Other')",
-          name: "fundingTypeSpecify",
+          label: "Use of Funds",
+          name: "useOfFunds",
           rows: 3,
-          rules: {
-            validate: (value, { fundingType }) =>
-              fundingType !== "Other" ||
-              value.trim().length > 0 ||
-              "Specify funding type if 'Other' is selected",
-          },
         },
         {
           component: Textarea,
-          label: "Investment Plan",
-          name: "investmentPlan",
+          label: "Exit Strategy",
+          name: "exitStrategy",
           rows: 3,
-          rules: { required: "Investment Plan is required" },
-        },
-        {
-          component: TextInput,
-          label: "Amount of Investment Needed (in USD)",
-          name: "investmentAmount",
-          type: "number",
-          rules: { required: "Investment Amount is required" },
-        },
-      ],
-    },
-    {
-      title: "Step 10: Contact Information",
-      fields: [
-        {
-          component: TextInput,
-          label: "Primary Contact Name",
-          name: "contactName",
-          rules: { required: "Primary Contact Name is required" },
-        },
-        {
-          component: TextInput,
-          label: "Primary Contact Email",
-          name: "contactEmail",
-          type: "email",
-          rules: {
-            required: "Primary Contact Email is required",
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Invalid email address",
-            },
-          },
-        },
-        {
-          component: TextInput,
-          label: "Primary Contact Phone",
-          name: "contactPhone",
-          type: "tel",
-          rules: { required: "Primary Contact Phone is required" },
         },
         {
           component: Textarea,
-          label: "Additional Comments",
-          name: "comments",
+          label: "Expected Return",
+          name: "expectedReturn",
+          rows: 3,
+        },
+        {
+          component: Textarea,
+          label: "Regulatory Requirement",
+          name: "regulatoryRequirement",
           rows: 3,
         },
       ],
     },
+
     {
-      title: "Step 11: Review and Submit",
+      title: "Step 10: Financial Documents and Final Agreements",
       fields: [
         {
-          component: Textarea,
-          label: "Review Your Information",
-          name: "reviewInfo",
-          rows: 5,
-          readOnly: true,
+          component: FileInput,
+          label: "Statement: Projected Profit and Loss",
+          name: "projectedProfitAndLoss",
+          rules: {
+            required: "Projected Profit and Loss statement is required",
+          },
+        },
+        {
+          component: FileInput,
+          label: "Statement: Projected Balance Sheet",
+          name: "projectedBalanceSheet",
+          rules: { required: "Projected Balance Sheet is required" },
+        },
+        {
+          component: FileInput,
+          label: "Statement: Cash Flow",
+          name: "cashFlowStatement",
+          rules: { required: "Cash Flow statement is required" },
         },
         {
           component: CheckboxInput,
           label:
-            "I confirm that the information provided is accurate and complete",
-          name: "confirmation",
+            "If successfully Funded Through PAVCC, are you willing to allocate 5% Equity to PAVCC?",
+          name: "allocateEquityToPAVCC",
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+          ],
           rules: {
-            required: "You must confirm that the information is accurate",
+            required: "Please indicate your willingness to allocate equity",
           },
         },
         {
-          component: ButtonUi,
-          label: "Submit",
-          name: "submit",
-          type: "submit",
-          rules: {},
+          component: CheckboxInput,
+          label:
+            "If successfully Funded Through PAVCC, are you willing to Allow PAVCC Financial Management Oversight by assigning an PAVCC Auditor or a CFO?",
+          name: "allowPAVCCOversight",
+          options: [
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+          ],
+          rules: {
+            required: "Please indicate your willingness to allow oversight",
+          },
+        },
+        {
+          component: CheckboxInput,
+          label: "Terms and Conditions",
+          name: "agreeTermsAndConditions",
+          options: [
+            {
+              value: "agree",
+              label: "I have read and agree to the Terms and Conditions",
+            },
+          ],
+          rules: {
+            required: "You must agree to the terms and conditions to proceed",
+          },
+        },
+      ],
+    },
+
+    {
+      title: "Step 11: Review and Submit",
+      fields: [
+        {
+          component: TextInput,
+          label: "Name",
+          name: "applicantName",
+          type: "text",
+          rules: { required: "Your name is required" },
+        },
+        {
+          component: TextInput,
+          label: "Date",
+          name: "submissionDate",
+          type: "date",
+          rules: { required: "Date of submission is required" },
+        },
+        {
+          component: CheckboxInput,
+          label: "Review and Edit Application",
+          name: "reviewApplication",
+          options: [
+            {
+              value: "agree",
+              label:
+                "I have reviewed and confirm that the information provided is accurate",
+            },
+          ],
+          rules: {
+            required: "You must review your application before submission",
+          },
         },
       ],
     },
@@ -500,10 +536,47 @@ export const IdeasCreate = () => {
   const onPrev = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
+  const token = localStorage.getItem("token");
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => formData.append(key, item));
+        } else {
+          formData.append(key, value);
+        }
+      });
+      if (data.legalDocuments) {
+        formData.append("legalDocuments", data.legalDocuments[0]);
+      }
+      if (data.projectedProfitLoss) {
+        formData.append("projectedProfitLoss", data.projectedProfitLoss[0]);
+      }
+      if (data.projectedBalanceSheet) {
+        formData.append("projectedBalanceSheet", data.projectedBalanceSheet[0]);
+      }
+      if (data.cashFlowStatement) {
+        formData.append("cashFlowStatement", data.cashFlowStatement[0]);
+      }
 
-  const onSubmit = (data) => {
-    console.log("Submitted Data:", data);
-    setSubmissionStatus("Application submitted successfully!");
+      const response = await axios.post(
+        `http://localhost:4500/api/v1/ent/entrepreneurs`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data);
+      setSubmissionStatus("Application submitted successfully!");
+    } catch (error) {
+      console.error(error);
+      setSubmissionStatus("Submission failed. Please try again.");
+    }
   };
 
   return (
@@ -531,26 +604,25 @@ export const IdeasCreate = () => {
         </div>
 
         <div className="flex justify-between">
-          {currentStep > 0 && (
-            <ButtonUi
-              label="Previous"
-              type="button"
-              className="bg-gray-500 hover:bg-gray-600 text-white"
-              onClick={onPrev}
-            />
-          )}
+          <ButtonUi
+            label="Previous"
+            type="button"
+            className="bg-gray-500 hover:bg-gray-600 text-white px-10 py-2"
+            onClick={onPrev}
+            disabled={currentStep > 0 ? false : true}
+          />
           {currentStep < steps.length - 1 ? (
             <ButtonUi
               label="Next"
               type="button"
-              className="bg-blue-500 hover:bg-blue-600 text-white"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-10 py-2"
               onClick={onNext}
             />
           ) : (
             <ButtonUi
               label="Submit"
               type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white"
+              className="bg-green-500 hover:bg-green-600 text-white px-10 py-2"
             />
           )}
         </div>

@@ -130,7 +130,7 @@ export const StartedProcess = () => {
               <div>
                 <h2 className="text-lg font-semibold">{idea.title}</h2>
                 <p className="text-gray-600">
-                  {idea.businessSector} • {idea.legalStatus} •{" "}
+                   {idea.legalStatus} •{" "}
                   {idea.yearsInBusiness} Years in Business
                 </p>
               </div>

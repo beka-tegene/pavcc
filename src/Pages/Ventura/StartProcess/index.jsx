@@ -98,7 +98,7 @@ export const StartProcess = () => {
 
   const handlePageSizeChange = (size) => {
     setPageSize(size);
-    setCurrentPage(1); // Reset to first page
+    setCurrentPage(1); 
   };
   return (
     <div className="flex flex-col gap-4 p-6 h-full">
@@ -115,7 +115,7 @@ export const StartProcess = () => {
               <div>
                 <h2 className="text-lg font-semibold">{idea.title}</h2>
                 <p className="text-gray-600">
-                  {idea.businessSector} • {idea.legalStatus} •{" "}
+                   {idea.legalStatus} •{" "}
                   {idea.yearsInBusiness} Years in Business
                 </p>
               </div>

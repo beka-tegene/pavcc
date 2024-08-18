@@ -10,7 +10,7 @@ export const Layout = ({ children }) => {
     </div>
     <div className="col-span-9 h-full">
       <Nav />
-      <main className="max-h-[93vh] overflow-y-scroll h-full">{children}</main>
+      <main className="max-h-[91vh] overflow-y-scroll h-full">{children}</main>
     </div>
   </div>
   )

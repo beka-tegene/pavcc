@@ -7,6 +7,8 @@ import { IdeaDetail } from "./IdeaDetail";
 import { IdeaSummary } from "./Summary";
 import { StartedProcess } from "./StartedProcess";
 import { StartedProcessDetail } from "./StartedProcessDetail";
+import { AdminNotification } from "./AdminNotification";
+import NotificationDetail from "./NotificationDetail";
 
 export const Admin = () => {
   return (
@@ -18,6 +20,9 @@ export const Admin = () => {
         <Route path="ideas-approved" element={<IdeaSummary />} />
         <Route path="start-process" element={<StartedProcess />} />
         <Route path="start-process/:id" element={<StartedProcessDetail />} />
+        <Route path="notifications" element={<AdminNotification />} />
+        <Route path="notifications/:id" element={<NotificationDetail />} />
+
       </Routes>
     </Layout>
   );

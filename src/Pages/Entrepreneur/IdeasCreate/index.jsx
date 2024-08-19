@@ -50,7 +50,7 @@ const fundingTypes = [
 
 export const IdeasCreate = () => {
   const navigate = useNavigate()
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, trigger } = useForm();
   const [currentStep, setCurrentStep] = useState(0);
   const [submissionStatus, setSubmissionStatus] = useState("");
 
@@ -532,8 +532,15 @@ export const IdeasCreate = () => {
     },
   ];
 
-  const onNext = () => {
-    setCurrentStep((prev) => prev + 1);
+  const onNext = async () => {
+    // Trigger validation for the current step
+    const isValid = await trigger(
+      steps[currentStep].fields.map((field) => field.name)
+    );
+
+    if (isValid) {
+      setCurrentStep((prev) => prev + 1);
+    }
   };
 
   const onPrev = () => {

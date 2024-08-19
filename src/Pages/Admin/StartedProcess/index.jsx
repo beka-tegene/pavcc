@@ -1,49 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFileAlt } from "react-icons/fa";
 import { FilterBySelect } from "../../../Components/FilterBySelect";
 import { Pagination } from "../../../Components/Pagination";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const StartedProcess = () => {
   const navigate = useNavigate();
-  const ideas = [
-    {
-      title: "Agriculture Platform",
-      businessSector: "Agriculture",
-      legalStatus: "Private Corporation",
-      yearsInBusiness: 5,
-      problem: "Inefficiencies in the supply chain of agricultural products.",
-      solution: "Online platform connecting farmers directly with retailers.",
-      investmentNeeded: "$2,000,000",
-      fundingStage: "Series A",
-      attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
-      submissionDate: "August 15, 2024",
-    },
-    {
-      title: "Agriculture Platform",
-      businessSector: "Agriculture",
-      legalStatus: "Private Corporation",
-      yearsInBusiness: 5,
-      problem: "Inefficiencies in the supply chain of agricultural products.",
-      solution: "Online platform connecting farmers directly with retailers.",
-      investmentNeeded: "$2,000,000",
-      fundingStage: "Series A",
-      attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
-      submissionDate: "August 15, 2024",
-    },
-    {
-      title: "Agriculture Platform",
-      businessSector: "Agriculture",
-      legalStatus: "Private Corporation",
-      yearsInBusiness: 5,
-      problem: "Inefficiencies in the supply chain of agricultural products.",
-      solution: "Online platform connecting farmers directly with retailers.",
-      investmentNeeded: "$2,000,000",
-      fundingStage: "Series A",
-      attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
-      submissionDate: "August 15, 2024",
-    },
-  ];
+  // const ideas = [
+  //   {
+  //     title: "Agriculture Platform",
+  //     businessSector: "Agriculture",
+  //     legalStatus: "Private Corporation",
+  //     yearsInBusiness: 5,
+  //     problem: "Inefficiencies in the supply chain of agricultural products.",
+  //     solution: "Online platform connecting farmers directly with retailers.",
+  //     investmentNeeded: "$2,000,000",
+  //     fundingStage: "Series A",
+  //     attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
+  //     submissionDate: "August 15, 2024",
+  //   },
+  //   {
+  //     title: "Agriculture Platform",
+  //     businessSector: "Agriculture",
+  //     legalStatus: "Private Corporation",
+  //     yearsInBusiness: 5,
+  //     problem: "Inefficiencies in the supply chain of agricultural products.",
+  //     solution: "Online platform connecting farmers directly with retailers.",
+  //     investmentNeeded: "$2,000,000",
+  //     fundingStage: "Series A",
+  //     attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
+  //     submissionDate: "August 15, 2024",
+  //   },
+  //   {
+  //     title: "Agriculture Platform",
+  //     businessSector: "Agriculture",
+  //     legalStatus: "Private Corporation",
+  //     yearsInBusiness: 5,
+  //     problem: "Inefficiencies in the supply chain of agricultural products.",
+  //     solution: "Online platform connecting farmers directly with retailers.",
+  //     investmentNeeded: "$2,000,000",
+  //     fundingStage: "Series A",
+  //     attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
+  //     submissionDate: "August 15, 2024",
+  //   },
+  // ];
   const filters = [
     {
       label: "Industry",
@@ -92,6 +93,27 @@ export const StartedProcess = () => {
       ],
     },
   ];
+  const [ideas, setIdea] = useState(null);
+  useEffect(() => {
+    fetchIdeas();
+  }, []);
+
+  const fetchIdeas = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4500/api/v1/ent/entrepreneurs`,
+        {
+          params: {
+            status: "Approved",
+            isApplication: "In Progress",
+          },
+        }
+      );
+      setIdea(response.data.entrepreneurs);
+    } catch (error) {
+      console.error("Error fetching idea details:", error);
+    }
+  };
 
   const handleFilterChange = (name, value, c) => {
     console.log(`Filter changed: ${name} = ${value} ${c}`);
@@ -110,6 +132,8 @@ export const StartedProcess = () => {
     setPageSize(size);
     setCurrentPage(1); // Reset to first page
   };
+  console.log(ideas);
+
   return (
     <div className="p-6">
       <div className="mb-4">
@@ -120,18 +144,17 @@ export const StartedProcess = () => {
       </div>
       <FilterBySelect filters={filters} onFilterChange={handleFilterChange} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-        {ideas.map((idea, index) => (
+        {ideas?.map((idea, index) => (
           <div
             key={index}
             className="bg-white shadow rounded-lg p-6 mb-4 cursor-pointer border-t-[3px] border-[#15803D]"
-            onClick={() => navigate(`/admin/start-process/1`)}
+            onClick={() => navigate(`/admin/start-process/${idea._id}`)}
           >
             <div className="flex items-center justify-between mb-1">
               <div>
-                <h2 className="text-lg font-semibold">{idea.title}</h2>
+                <h2 className="text-lg font-semibold">{idea.businessSector}</h2>
                 <p className="text-gray-600">
-                   {idea.legalStatus} •{" "}
-                  {idea.yearsInBusiness} Years in Business
+                  {idea.legalStatus} • {idea.yearsInBusiness} Years in Business
                 </p>
               </div>
               <div className="text-blue-500">
@@ -142,7 +165,7 @@ export const StartedProcess = () => {
             <div className="mb-1">
               <h3 className="font-medium mb-2">Overview</h3>
               <p className="text-sm">
-                <strong>Problem:</strong> {idea.problem}
+                <strong>Problem:</strong> {idea.problemSolved}
               </p>
               <p className="text-sm">
                 <strong>Solution:</strong> {idea.solution}

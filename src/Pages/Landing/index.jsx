@@ -3,21 +3,24 @@ import { TextInput } from "../../Components/TextInput";
 import { ButtonUi } from "../../Components/Button";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const Landing = () => {
   const { control, handleSubmit } = useForm();
-
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
-    console.log(data);
-
     try {
       const response = await axios.post(
         `http://localhost:4500/api/v1/auth/login`,
-        {
-          emailOrPhoneNumber: data.email, // Use emailOrPhoneNumber as the key
-          password: data.password,
-        }
+        data
       );
+      localStorage.setItem("token", response.data.token);
+      if (response.data.user.role === "Admin") {
+        navigate("/admin/dashboard");
+      }
+      if (response.data.user.role === "Investor") {
+        navigate("/ventura/dashboard");
+      }
       console.log(response.data);
     } catch (error) {
       console.log({ error });
@@ -30,7 +33,7 @@ export const Landing = () => {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <TextInput
             label="Email or Phone Number"
-            name="email"
+            name="emailOrPhoneNumber"
             control={control}
             rules={{
               required: "Email or Phone Number is required",

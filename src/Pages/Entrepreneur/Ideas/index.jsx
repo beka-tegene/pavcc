@@ -15,11 +15,16 @@ export const Ideas = () => {
   useEffect(() => {
     fetchIdeas();
   }, []);
-
+  const token = localStorage.getItem("token");
   const fetchIdeas = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs`
+        `http://localhost:4500/api/v1/ent/user`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setIdea(response.data.entrepreneurs);
     } catch (error) {
@@ -37,7 +42,7 @@ export const Ideas = () => {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {idea?.map((idea ,index) => (
+        {idea?.map((idea, index) => (
           <IdeaCard key={index} idea={idea} onClick={handleCardClick} />
         ))}
       </div>

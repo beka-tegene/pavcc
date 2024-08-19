@@ -53,15 +53,17 @@ export const Nav = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setNotifications(response.data);
+      setNotifications(response.data.notifications);
     } catch (error) {
       console.log({ error });
     }
   };
+  
   return (
     <PanalNav
       username="John"
       notifications={notifications}
+      link="/admin/notifications/"
       NotificationIcon={FaBell}
       ProfileIcon={FaUser}
       notificationLink="/admin/notifications"

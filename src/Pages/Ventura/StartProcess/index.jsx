@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FilterBySelect } from "../../../Components/FilterBySelect";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "../../../Components/Pagination";
 import { FaFileAlt } from "react-icons/fa";
+import axios from "axios";
 
 export const StartProcess = () => {
   const filters = [
@@ -53,32 +54,32 @@ export const StartProcess = () => {
       ],
     },
   ];
-  const ideas = [
-    {
-      title: "Agriculture Platform",
-      businessSector: "Agriculture",
-      legalStatus: "Private Corporation",
-      yearsInBusiness: 5,
-      problem: "Inefficiencies in the supply chain of agricultural products.",
-      solution: "Online platform connecting farmers directly with retailers.",
-      investmentNeeded: "$2,000,000",
-      fundingStage: "Series A",
-      attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
-      submissionDate: "August 15, 2024",
-    },
-    {
-      title: "Agriculture Platform",
-      businessSector: "Agriculture",
-      legalStatus: "Private Corporation",
-      yearsInBusiness: 5,
-      problem: "Inefficiencies in the supply chain of agricultural products.",
-      solution: "Online platform connecting farmers directly with retailers.",
-      investmentNeeded: "$2,000,000",
-      fundingStage: "Series A",
-      attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
-      submissionDate: "August 15, 2024",
-    },
-  ];
+  // const ideas = [
+  //   {
+  //     title: "Agriculture Platform",
+  //     businessSector: "Agriculture",
+  //     legalStatus: "Private Corporation",
+  //     yearsInBusiness: 5,
+  //     problem: "Inefficiencies in the supply chain of agricultural products.",
+  //     solution: "Online platform connecting farmers directly with retailers.",
+  //     investmentNeeded: "$2,000,000",
+  //     fundingStage: "Series A",
+  //     attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
+  //     submissionDate: "August 15, 2024",
+  //   },
+  //   {
+  //     title: "Agriculture Platform",
+  //     businessSector: "Agriculture",
+  //     legalStatus: "Private Corporation",
+  //     yearsInBusiness: 5,
+  //     problem: "Inefficiencies in the supply chain of agricultural products.",
+  //     solution: "Online platform connecting farmers directly with retailers.",
+  //     investmentNeeded: "$2,000,000",
+  //     fundingStage: "Series A",
+  //     attachments: ["Legal Documents", "Projected Profit and Loss Statement"],
+  //     submissionDate: "August 15, 2024",
+  //   },
+  // ];
   const handleFilterChange = (name, value, c) => {
     console.log(`Filter changed: ${name} = ${value} ${c}`);
     // Add logic to handle the filter change
@@ -98,25 +99,47 @@ export const StartProcess = () => {
 
   const handlePageSizeChange = (size) => {
     setPageSize(size);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
+  const [ideas, setIdea] = useState([]);
+  useEffect(() => {
+    fetchIdeas();
+  }, []);
+  const token = localStorage.getItem("token");
+  const fetchIdeas = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4500/api/v1/ent/filter/entrepreneurs/in-progress`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIdea(response?.data?.entrepreneurs);
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching idea details:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 p-6 h-full">
       <h1 className="text-xl font-semibold">All Ideas</h1>
       <FilterBySelect filters={filters} onFilterChange={handleFilterChange} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-3">
-        {ideas.map((idea, index) => (
+        {ideas?.map((item, index) => (
           <div
             key={index}
             className="bg-white shadow rounded-lg p-6 mb-4 border-t-[3px] border-[#15803D] cursor-pointer"
-            onClick={() => handleCardClick(index + 1)}
+            onClick={() => handleCardClick(item._id)}
           >
-            <div className="flex items-center justify-between mb-1">
+           <div className="flex items-center justify-between mb-1">
               <div>
-                <h2 className="text-lg font-semibold">{idea.title}</h2>
+                <h2 className="text-lg font-semibold">{item.businessSector}</h2>
                 <p className="text-gray-600">
-                   {idea.legalStatus} •{" "}
-                  {idea.yearsInBusiness} Years in Business
+                   {item.legalStatus} •{" "}
+                  {item.yearsInBusiness} Years in Business
                 </p>
               </div>
               <div className="text-blue-500">
@@ -127,40 +150,27 @@ export const StartProcess = () => {
             <div className="mb-1">
               <h3 className="font-medium mb-2">Overview</h3>
               <p className="text-sm">
-                <strong>Problem:</strong> {idea.problem}
+                <strong>Problem:</strong> {item.problemSolved}
               </p>
               <p className="text-sm">
-                <strong>Solution:</strong> {idea.solution}
+                <strong>Solution:</strong> {item.solution}
               </p>
             </div>
 
             <div className="mb-1">
               <h3 className="font-medium mb-2">Investment Summary</h3>
               <p className="text-sm">
-                <strong>Amount Needed:</strong> {idea.investmentNeeded}
+                <strong>Amount Needed:</strong> {item.investmentNeededUSD}
               </p>
               <p className="text-sm">
-                <strong>Stage of Investment:</strong> {idea.fundingStage}
+                <strong>Stage of Investment:</strong> {item.stageOfInvestment}
               </p>
-            </div>
-
-            <div className="mb-1">
-              <h3 className="font-medium mb-1">Attachments</h3>
-              <div className="flex flex-col gap-1">
-                {idea.attachments.map((attachment, idx) => (
-                  <div
-                    key={idx}
-                    className="text-gray-600 flex items-center gap-1 text-sm"
-                  >
-                    <FaFileAlt /> {attachment}
-                  </div>
-                ))}
-              </div>
             </div>
 
             <div className="flex items-center justify-between mt-1">
               <p className="text-sm text-gray-600">
-                Submitted on {idea.submissionDate}
+                Submitted on{" "}
+                {new Date(item?.applicationDate).toLocaleDateString()}
               </p>
             </div>
           </div>

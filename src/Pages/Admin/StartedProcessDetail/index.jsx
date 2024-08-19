@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonUi } from "../../../Components/Button";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export const StartedProcessDetail = () => {
   const opportunity = {
@@ -73,7 +75,7 @@ export const StartedProcessDetail = () => {
       },
     ],
   };
-
+  const { id } = useParams();
   const [popup, setPopup] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [message, setMessage] = useState("");
@@ -89,6 +91,24 @@ export const StartedProcessDetail = () => {
     setPopup(false);
     setMessage("");
   };
+  const [ideaById, setIdeaById] = useState(null);
+
+  useEffect(() => {
+    fetchIdeasById();
+  }, []);
+
+  const fetchIdeasById = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4500/api/v1/ent/entrepreneurs/${id}`
+      );
+      const entrepreneur = response.data.entrepreneur;
+      setIdeaById(entrepreneur);
+    } catch (error) {
+      console.error("Error fetching idea details:", error);
+    }
+  };
+  console.log(ideaById);
 
   return (
     <div className="p-6">
@@ -141,19 +161,16 @@ export const StartedProcessDetail = () => {
         </div>
       )}
 
-      <div key={opportunity.id} className="bg-white shadow rounded-lg p-3 mt-4">
-        <h2 className="text-xl font-semibold mb-2">{opportunity.title}</h2>
-        <p className="text-gray-700 mb-4">{opportunity.description}</p>
+      <div key={ideaById?._id} className="bg-white shadow rounded-lg p-3 mt-4">
+        <h2 className="text-xl font-semibold mb-2">
+          {ideaById?.businessSector}
+        </h2>
         <p className="text-gray-900 font-medium mb-2">
-          Amount Required: {opportunity.currency} {opportunity.amountRequired}
+          Amount Required: {ideaById?.investmentNeededUSD}
         </p>
-        <p className="text-gray-600 mb-2">Deadline: {opportunity.deadline}</p>
+        <p className="text-gray-600 mb-2">Deadline: {ideaById?.deadline}</p>
         <p className="text-gray-600 mb-4">
-          Location: {opportunity.location.city}, {opportunity.location.state},{" "}
-          {opportunity.location.country}
-        </p>
-        <p className="text-gray-600 mb-4">
-          Tags: {opportunity.tags.join(", ")}
+          {ideaById?.yearsInBusiness} Years in Business, {ideaById?.legalStatus}
         </p>
 
         {opportunity.interpreterProfiles.length > 0 && (

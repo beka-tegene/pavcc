@@ -158,12 +158,11 @@ export const IdeaDetails = () => {
     setIsModalOpen(true);
   };
   const token = localStorage.getItem("token");
+
   const handleConfirm = async () => {
-    setIsModalOpen(false);
-    setMessage("Process started successfully!");
     try {
       const response = await axios.put(
-        `http://localhost:4500/api/v1/ent/entrepreneurs/66be460d3dd417b5f959b647/application-status`,
+        `http://localhost:4500/api/v1/ent/entrepreneur/${id}/application-status`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -174,6 +173,8 @@ export const IdeaDetails = () => {
     } catch (error) {
       console.log({ error });
     }
+    setIsModalOpen(false);
+    setMessage("Process started successfully!");
   };
 
   const handleClose = () => {

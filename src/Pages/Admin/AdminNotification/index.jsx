@@ -39,10 +39,12 @@ export const AdminNotification = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setNotifications(response.data);
+
+      setNotifications(response?.data.notifications);
     } catch (error) {
       console.log({ error });
     }
   };
+
   return <NotificationsPage notifications={notifications} />;
 };

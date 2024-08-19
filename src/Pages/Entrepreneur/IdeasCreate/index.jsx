@@ -76,6 +76,7 @@ export const IdeasCreate = () => {
           component: FileInput,
           label: "Attach Available Legal Documents",
           name: "legalDocuments",
+          rules: { required: "Attach Available Legal Documents is required" },
         },
         {
           component: TextInput,

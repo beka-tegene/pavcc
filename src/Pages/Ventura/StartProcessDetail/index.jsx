@@ -1,212 +1,272 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { AiOutlineDownload } from "react-icons/ai";
 import { useParams } from "react-router-dom";
-const ideas = [
-    {
-      id: "1",
-      title: "AI Translation Tool Development",
-      description:
-        "Seeking funding for a revolutionary AI translation tool that supports multiple languages with high accuracy.",
-      industry: "Technology",
-      amountRequired: 500000,
-      currency: "USD",
-      deadline: "2024-12-31",
-      status: "open",
-      postedDate: "2024-08-01",
-      location: {
-        city: "San Francisco",
-        state: "CA",
-        country: "USA",
-      },
-      tags: ["AI", "Technology", "Translation"],
-      contactInfo: {
-        email: "contact@aitech.com",
-        phone: "+1-234-567-8900",
-      },
-      interpreterProfiles: [
-        {
-          id: "101",
-          name: "Anna Smith",
-          languages: [
-            {
-              language: "English",
-              proficiency: "native",
-            },
-            {
-              language: "Spanish",
-              proficiency: "advanced",
-            },
-          ],
-          experience: [
-            {
-              jobTitle: "Freelance Translator",
-              company: "Various",
-              duration: "5 years",
-              description:
-                "Translated documents, software, and communications for clients across various industries.",
-            },
-          ],
-          availability: {
-            days: ["Monday", "Wednesday", "Friday"],
-            hours: {
-              start: "09:00 AM",
-              end: "05:00 PM",
-            },
-          },
-          rates: {
-            perHour: 50,
-            perDay: 400,
-            currency: "USD",
-          },
-          description:
-            "Experienced translator with a strong background in technical and business translation.",
-          website: "https://annasmithtranslator.com",
-          certifications: [
-            {
-              certification: "Certified Translator",
-              issuingOrganization: "American Translators Association",
-              dateIssued: "2020-01-15",
-            },
-          ],
-          profilePicture: "https://via.placeholder.com/150",
-        },
-      ],
-    },
-    {
-      id: "2",
-      title: "Healthcare App for Multilingual Patients",
-      description:
-        "Funding required for developing a mobile app aimed at improving healthcare accessibility for multilingual patients.",
-      industry: "Healthcare",
-      amountRequired: 750000,
-      currency: "USD",
-      deadline: "2025-03-15",
-      status: "open",
-      postedDate: "2024-08-10",
-      location: {
-        city: "New York",
-        state: "NY",
-        country: "USA",
-      },
-      tags: ["Healthcare", "App", "Multilingual"],
-      contactInfo: {
-        email: "contact@healthcareapp.com",
-        phone: "+1-987-654-3210",
-      },
-      interpreterProfiles: [
-        {
-          id: "102",
-          name: "Luis Gomez",
-          languages: [
-            {
-              language: "English",
-              proficiency: "native",
-            },
-            {
-              language: "French",
-              proficiency: "fluent",
-            },
-          ],
-          experience: [
-            {
-              jobTitle: "Medical Interpreter",
-              company: "HealthCorp",
-              duration: "7 years",
-              description:
-                "Provided medical interpretation services in various healthcare settings.",
-            },
-          ],
-          availability: {
-            days: ["Tuesday", "Thursday", "Saturday"],
-            hours: {
-              start: "10:00 AM",
-              end: "04:00 PM",
-            },
-          },
-          rates: {
-            perHour: 60,
-            perDay: 480,
-            currency: "USD",
-          },
-          description:
-            "Experienced medical interpreter with expertise in complex healthcare terminology.",
-          website: "https://luisgomezinterpreter.com",
-          certifications: [
-            {
-              certification: "Certified Medical Interpreter",
-              issuingOrganization:
-                "National Board of Certification for Medical Interpreters",
-              dateIssued: "2019-07-22",
-            },
-          ],
-          profilePicture: "https://via.placeholder.com/150",
-        },
-      ],
-    },
-  ];
-export const StartProcessDetail = () => {
-  const { id } = useParams();
-  const idea = ideas.find((idea) => idea.id === id);
+import { ButtonUi } from "../../../Components/Button";
+const steps = [
+  {
+    title: "Step 2: Revenue and Employees",
+    keys: [
+      "revenueLastThreeYears",
+      "revenueMonthlyForecastYear1",
+      "revenueForecastNext5Years",
+      "numberOfEmployees",
+    ],
+  },
+  {
+    title: "Step 3: Business Details",
+    keys: [
+      "companyHistory",
+      "ownershipStructure",
+      "productsServices",
+      "locationFacilities",
+      "managementTeam",
+    ],
+  },
+  {
+    title: "Step 4: Market and Competition",
+    keys: [
+      "currentCompetition",
+      "futureMarkets",
+      "marketSizeSegments",
+      "marketTrends",
+      "swotAnalysis",
+      "keyCustomers",
+    ],
+  },
+  {
+    title: "Step 5: Financial Projections",
+    keys: [
+      "expensesForecastNext5Years",
+      "expensesMonthlyForecastYear1",
+      "forecastedNetProfitNext5Years",
+      "keyForecastAssumptions",
+      "projectedBalanceSheet",
+      "projectedProfitLoss",
+    ],
+  },
+  {
+    title: "Step 6: Operations and Technology",
+    keys: [
+      "technology",
+      "equipmentTools",
+      "regulatoryRequirement",
+      "riskMitigation",
+    ],
+  },
+  {
+    title: "Step 7: Milestones and Metrics",
+    keys: ["keyMilestones", "keyMetrics"],
+  },
+  {
+    title: "Step 8: Financial Forecasts",
+    keys: ["expectedReturn"],
+  },
+  {
+    title: "Step 9: Investment Details",
+    keys: [
+      "typeOfFundingRequested",
+      "useOfFunds",
+      "stageOfInvestment",
+      "willingToAllocateEquityToPAVCC",
+      "willingForFinancialManagementOversight",
+    ],
+  },
+  {
+    title: "Step 10: Contact Information",
+    keys: ["contactInformation"],
+  },
+  {
+    title: "Step 11: Review and Submit",
+    keys: ["reviewAndEditAgreed", "status"],
+  },
+];
 
-  if (!idea) {
+const labels = {
+  advantageOverCompetition: "Advantage Over Competition",
+  advisors: "Advisors",
+  barriersToEntry: "Barriers to Entry",
+  companyHistory: "Company History",
+  currentCompetition: "Current Competition",
+  equipmentTools: "Equipment & Tools",
+  exitStrategy: "Exit Strategy",
+  expectedReturn: "Expected Return",
+  expensesForecastNext5Years: "Expenses Forecast (Next 5 Years)",
+  expensesMonthlyForecastYear1: "Expenses Monthly Forecast (Year 1)",
+  forecastedNetProfitNext5Years: "Forecasted Net Profit (Next 5 Years)",
+  futureMarkets: "Future Markets",
+  intellectualProperty: "Intellectual Property",
+  isApplication: "Application Status",
+  keyForecastAssumptions: "Key Forecast Assumptions",
+  keyCustomers: "Key Customers",
+  keyMetrics: "Key Metrics",
+  keyMilestones: "Key Milestones",
+  legalDocuments: "Legal Documents",
+  legalStatus: "Legal Status",
+  locationFacilities: "Location & Facilities",
+  managementTeam: "Management Team",
+  marketSizeSegments: "Market Size & Segments",
+  marketTrends: "Market Trends",
+  numberOfEmployees: "Number of Employees",
+  ownershipStructure: "Ownership Structure",
+  productsServices: "Products & Services",
+  projectedBalanceSheet: "Projected Balance Sheet",
+  projectedProfitLoss: "Projected Profit & Loss",
+  regulatoryRequirement: "Regulatory Requirement",
+  revenueForecastNext5Years: "Revenue Forecast (Next 5 Years)",
+  revenueLastThreeYears: "Revenue (Last 3 Years)",
+  revenueMonthlyForecastYear1: "Revenue Monthly Forecast (Year 1)",
+  reviewAndEditAgreed: "Review and Edit Agreed",
+  riskMitigation: "Risk Mitigation",
+  stageOfInvestment: "Stage of Investment",
+  status: "Status",
+  swotAnalysis: "SWOT Analysis",
+  technology: "Technology",
+  typeOfFundingRequested: "Type of Funding Requested",
+  useOfFunds: "Use of Funds",
+  willingForFinancialManagementOversight:
+    "Willing for Financial Management Oversight",
+  willingToAllocateEquityToPAVCC: "Willing to Allocate Equity to PAVCC",
+  yearsInBusiness: "Years in Business",
+};
+export const StartProcessDetail = () => {
+  const token = localStorage.getItem("token");
+  const { id } = useParams();
+  const [ideaById, setIdeaById] = useState(null);
+
+  useEffect(() => {
+    fetchIdeasById();
+  }, []);
+
+  const fetchIdeasById = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4500/api/v1/ent/entrepreneurs/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const entrepreneur = response.data.entrepreneur;
+      setIdeaById(entrepreneur);
+    } catch (error) {
+      console.error("Error fetching idea details:", error);
+    }
+  };
+
+  const renderDownloadLinks = (items) => {
+    if (!items || !items.length) return null;
+    return items.map((item, index) => (
+      <div key={index} className="flex items-center space-x-2">
+        <a
+          href={item}
+          download
+          className="text-blue-600 hover:underline flex items-center space-x-2"
+        >
+          <AiOutlineDownload />
+          <span>Download</span>
+        </a>
+      </div>
+    ));
+  };
+  if (!ideaById) {
     return <p>Idea not found</p>;
   }
 
+  const handleConfirm = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:4500/api/v1/ent/entrepreneur/${id}/application-status`,
+        {
+          isApplication: "Closed",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert(response.data.message);
+    } catch (error) {
+      console.log({ error });
+    }
+  };
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">{idea.title}</h1>
-      <p className="text-gray-700 mb-4">{idea.description}</p>
-      <p className="text-gray-900 font-medium mb-2">
-        Amount Required: {idea.currency} {idea.amountRequired}
-      </p>
-      <p className="text-gray-600 mb-2">
-        Deadline: {idea.deadline}
-      </p>
-      <p className="text-gray-600 mb-4">
-        Location: {idea.location.city}, {idea.location.state}, {idea.location.country}
-      </p>
-      <h3 className="text-lg font-semibold mb-3">Interpreter Profiles</h3>
-      {idea.interpreterProfiles.length > 0 ? (
-        idea.interpreterProfiles.map((interpreter) => (
-          <div
-            key={interpreter.id}
-            className="bg-gray-100 p-4 rounded-lg mb-4"
-          >
-            <h4 className="text-lg font-semibold mb-2">{interpreter.name}</h4>
-            <p className="text-gray-700 mb-2">
-              Languages:{" "}
-              {interpreter.languages
-                .map((lang) => `${lang.language} (${lang.proficiency})`)
-                .join(", ")}
-            </p>
-            <p className="text-gray-700 mb-2">
-              Experience:{" "}
-              {interpreter.experience
-                .map((exp) => `${exp.jobTitle} at ${exp.company}`)
-                .join(", ")}
-            </p>
-            <p className="text-gray-700 mb-2">
-              Availability: {interpreter.availability.days.join(", ")} from {interpreter.availability.hours.start} to {interpreter.availability.hours.end}
-            </p>
-            <p className="text-gray-700 mb-2">
-              Rates: {interpreter.rates.currency} {interpreter.rates.perHour} per hour
-            </p>
-            <p className="text-gray-700 mb-4">
-              Description: {interpreter.description}
-            </p>
-            <a
-              href={interpreter.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              View Profile
-            </a>
+    <div className="p-6 space-y-6">
+      <div className="flex justify-end">
+        <ButtonUi
+          label={`Close`}
+          type="button"
+          className="bg-green-700 text-white px-8 py-2 rounded-lg hover:bg-green-800 font-semibold"
+          onClick={handleConfirm}
+        />
+      </div>
+      <div
+        className={`bg-white shadow-lg rounded-lg p-6 border-t-[3px] ${
+          ideaById?.status === "Approved"
+            ? "border-[#15803D]"
+            : ideaById?.status === "Pending"
+            ? "border-yellow-500"
+            : "border-red-700"
+        }`}
+      >
+        <h1 className="text-3xl font-bold mb-4">{ideaById?.businessSector}</h1>
+        <p className="text-gray-700 mb-2">
+          <strong>Problem Solved:</strong> {ideaById?.problemSolved}
+        </p>
+        <p className="text-gray-700 mb-4">
+          <strong>Solution:</strong> {ideaById?.solution}
+        </p>
+        <p className="text-gray-900 font-medium mb-2">
+          <strong>Amount Required:</strong> ${ideaById?.investmentNeededUSD}
+        </p>
+        <p className="text-gray-600 mb-4">
+          <strong>Application Date:</strong>{" "}
+          {new Date(ideaById?.applicationDate).toLocaleDateString()}
+        </p>
+        {steps.map((step, stepIndex) => (
+          <div key={stepIndex} className="border-t border-gray-200 pt-4">
+            <h2 className="text-2xl font-semibold mb-4">{step.title}</h2>
+            <div className="space-y-4">
+              {step.keys.map((key) => (
+                <div key={key} className="flex flex-col space-y-1">
+                  <strong className="text-gray-900">
+                    {labels[key] ||
+                      key.charAt(0).toUpperCase() +
+                        key
+                          .slice(1)
+                          .replace(/([A-Z])/g, " $1")
+                          .trim()}
+                    :
+                  </strong>
+                  {Array.isArray(ideaById[key]) ? (
+                    renderDownloadLinks(ideaById[key])
+                  ) : (
+                    <p className="text-gray-700">{ideaById[key]}</p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        ))
-      ) : (
-        <p>No interpreters available for this idea.</p>
-      )}
+        ))}
+      </div>
+
+      <div className="bg-white shadow-lg rounded-lg px-6 py-3 mt-6">
+        <h2 className="text-2xl font-semibold mb-2">Interpreter Profile</h2>
+        <div className="flex items-center space-x-4">
+          <img
+            src={ideaById?.userId?.picture}
+            alt="Profile"
+            className="w-16 h-16 rounded-full object-cover"
+          />
+          <div>
+            <h3 className="text-xl font-semibold">
+              {ideaById?.userId?.firstName} {ideaById?.userId?.lastName}
+            </h3>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
-

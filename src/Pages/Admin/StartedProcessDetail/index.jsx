@@ -82,15 +82,11 @@ export const StartedProcessDetail = () => {
 
   const handleButtonClick = (type) => {
     setSelectedNotification(type);
+
     setPopup(true);
   };
+  const token = localStorage.getItem("token");
 
-  const handleSendNotification = () => {
-    console.log(`Sending notification to ${selectedNotification}: ${message}`);
-    // Add your notification sending logic here
-    setPopup(false);
-    setMessage("");
-  };
   const [ideaById, setIdeaById] = useState(null);
 
   useEffect(() => {
@@ -109,6 +105,28 @@ export const StartedProcessDetail = () => {
     }
   };
   console.log(ideaById);
+
+  const handleSendNotification = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:4500/api/v1/not/notifications/send`,
+        {
+          receiverId: ideaById?.updatedBy?._id,
+          type: "likePost",
+          message: message,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log({ error });
+    }
+    setPopup(false);
+    setMessage("");
+  };
 
   return (
     <div className="p-6">
@@ -173,64 +191,37 @@ export const StartedProcessDetail = () => {
           {ideaById?.yearsInBusiness} Years in Business, {ideaById?.legalStatus}
         </p>
 
-        {opportunity.interpreterProfiles.length > 0 && (
-          <>
-            <h3 className="text-lg font-semibold mb-3">
-              Potential Interpreters
-            </h3>
-            {opportunity.interpreterProfiles.map((interpreter) => (
-              <div
-                key={interpreter.id}
-                className="bg-gray-100 p-4 rounded-lg mb-4"
-              >
-                <div className="flex items-start mb-4">
-                  <img
-                    src={interpreter.profilePicture}
-                    alt={interpreter.name}
-                    className="w-16 h-16 rounded-full mr-4"
-                  />
-                  <div>
-                    <h4 className="text-lg font-semibold mb-1">
-                      {interpreter.name}
-                    </h4>
-                    <p className="text-gray-700 mb-2">
-                      Languages:{" "}
-                      {interpreter.languages
-                        .map((lang) => `${lang.language} (${lang.proficiency})`)
-                        .join(", ")}
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      Experience:{" "}
-                      {interpreter.experience
-                        .map((exp) => `${exp.jobTitle} at ${exp.company}`)
-                        .join(", ")}
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      Availability: {interpreter.availability.days.join(", ")}{" "}
-                      from {interpreter.availability.hours.start} to{" "}
-                      {interpreter.availability.hours.end}
-                    </p>
-                    <p className="text-gray-700 mb-2">
-                      Rates: {interpreter.rates.currency}{" "}
-                      {interpreter.rates.perHour} per hour
-                    </p>
-                    <p className="text-gray-700 mb-4">
-                      Description: {interpreter.description}
-                    </p>
-                    <a
-                      href={interpreter.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:underline"
-                    >
-                      View Profile
-                    </a>
-                  </div>
-                </div>
+        <>
+          <h3 className="text-lg font-semibold mb-3">Potential Interpreters</h3>
+          <div className="bg-gray-100 p-4 rounded-lg mb-4">
+            <div className="flex items-start mb-4">
+              <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-50 shadow mr-4">
+                <img
+                  src={ideaById?.updatedBy?.picture}
+                  alt={ideaById?.updatedBy?.firstName}
+                  className="w-full h-full object-contain"
+                />
               </div>
-            ))}
-          </>
-        )}
+              <div className="bg-gray-100 p-4 rounded-lg mb-4">
+                <h4 className="font-semibold mb-1">
+                  {ideaById?.updatedBy?.firstName}{" "}
+                  {ideaById?.updatedBy?.lastName}{" "}
+                  {ideaById?.updatedBy?.middleName}
+                </h4>
+                <p className="text-gray-700 mb-1 text-sm">
+                  {ideaById?.updatedBy?.email}
+                </p>
+                <p className="text-gray-700 mb-1 text-sm">
+                  {ideaById?.updatedBy?.zipCode} , {ideaById?.updatedBy?.city} ,
+                  {ideaById?.updatedBy?.state} ,{ideaById?.updatedBy?.country}
+                </p>
+                <p className="text-gray-700 mb-1 text-sm">
+                  {ideaById?.updatedBy?.phoneNumber}
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
       </div>
     </div>
   );

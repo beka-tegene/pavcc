@@ -152,16 +152,20 @@ export const IdeaDetail = () => {
       console.error("Error fetching idea details:", error);
     }
   };
-
+  const token = localStorage.getItem("token");
   const handleChange = async () => {
     try {
       const newStatus = isChecked ? "Rejected" : "Approved";
       await axios.patch(
         `http://localhost:4500/api/v1/ent/entrepreneurs/${id}/status`,
-        { status: newStatus }
+        { status: newStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setIsChecked(!isChecked); // Toggle the checkbox state
-      // Optionally refetch or update state to reflect the change
       fetchIdeasById();
     } catch (error) {
       console.error("Error updating idea status:", error);

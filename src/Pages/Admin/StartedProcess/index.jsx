@@ -114,6 +114,7 @@ export const StartedProcess = () => {
       console.error("Error fetching idea details:", error);
     }
   };
+  console.log(ideas);
 
   const handleFilterChange = (name, value, c) => {
     console.log(`Filter changed: ${name} = ${value} ${c}`);
@@ -172,16 +173,19 @@ export const StartedProcess = () => {
               </p>
             </div>
             <div className="bg-gray-100 p-4 rounded-lg mb-4">
-              <h4 className="font-semibold mb-1">Luis Gomez</h4>
+              <h4 className="font-semibold mb-1">
+                {idea.updatedBy.firstName} {idea.updatedBy.lastName}{" "}
+                {idea.updatedBy.middleName}
+              </h4>
               <p className="text-gray-700 mb-1 text-sm">
-                Languages: English (native), French (fluent)
+                {idea.updatedBy.email}
               </p>
               <p className="text-gray-700 mb-1 text-sm">
-                Experience: Medical Interpreter at HealthCorp
+                {idea.updatedBy.zipCode} , {idea.updatedBy.city} ,
+                {idea.updatedBy.state} ,{idea.updatedBy.country}
               </p>
               <p className="text-gray-700 mb-1 text-sm">
-                Availability: Tuesday, Thursday, Saturday from 10:00 AM to 04:00
-                PM
+                {idea.updatedBy.phoneNumber}
               </p>
             </div>
           </div>

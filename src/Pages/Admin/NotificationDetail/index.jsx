@@ -1,24 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// const notifications = [
-//   {
-//     id: "1",
-//     title: "New Update Available",
-//     date: "2024-08-18T12:34:56Z",
-//     message: "A new update is available for your application.",
-//     category: "Update",
-//     link: "/updates",
-//   },
-//   {
-//     id: "2",
-//     title: "System Maintenance Scheduled",
-//     date: "2024-08-17T10:00:00Z",
-//     message: "The system will be down for maintenance on 2024-08-20.",
-//     category: "Maintenance",
-//     link: "/maintenance",
-//   },
-// ];
+
 
 const NotificationDetail = () => {
   const [notifications, setNotifications] = useState();
@@ -44,7 +27,6 @@ const NotificationDetail = () => {
   if (!notification) {
     return <div className="p-4 text-red-500">Notification not found!</div>;
   }
-  console.log(notification);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-lg">

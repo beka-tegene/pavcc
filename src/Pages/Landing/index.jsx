@@ -21,7 +21,9 @@ export const Landing = () => {
       if (response.data.user.role === "Investor") {
         navigate("/ventura/dashboard");
       }
-      console.log(response.data);
+      if (response.data.user.role === "Entrepreneur") {
+        navigate("/entrepreneur/dashboard");
+      }
     } catch (error) {
       console.log({ error });
     }

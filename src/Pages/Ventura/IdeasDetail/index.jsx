@@ -164,12 +164,15 @@ export const IdeaDetails = () => {
       const response = await axios.put(
         `http://localhost:4500/api/v1/ent/entrepreneur/${id}/application-status`,
         {
+          isApplication: "In Progress",
+        },
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(response.data);
+      alert(response.data.message);
     } catch (error) {
       console.log({ error });
     }

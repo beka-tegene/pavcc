@@ -377,7 +377,7 @@ export const IdeasCreate = () => {
         {
           component: TextInput,
           label: "Amount of Investment Needed (in USD)",
-          name: "investmentAmount",
+          name: "investmentNeededUSD",
           type: "number",
           rules: { required: "Investment Amount is required" },
         },
@@ -433,7 +433,7 @@ export const IdeasCreate = () => {
         {
           component: FileInput,
           label: "Statement: Projected Profit and Loss",
-          name: "projectedProfitAndLoss",
+          name: "projectedProfitLoss",
           rules: {
             required: "Projected Profit and Loss statement is required",
           },

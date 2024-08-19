@@ -7,6 +7,7 @@ import { ButtonUi } from "../../../Components/Button";
 import { Textarea } from "../../../Components/Textarea";
 import { CheckboxInput } from "../../../Components/CheckboxInput";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const businessSectors = [
   { value: "Agriculture", label: "Agriculture" },
   { value: "Agro-processing", label: "Agro-processing" },
@@ -47,6 +48,7 @@ const fundingTypes = [
 ];
 
 export const IdeasCreate = () => {
+  const navigate = useNavigate()
   const { control, handleSubmit } = useForm();
   const [currentStep, setCurrentStep] = useState(0);
   const [submissionStatus, setSubmissionStatus] = useState("");
@@ -89,25 +91,25 @@ export const IdeasCreate = () => {
         {
           component: TextInput,
           label: "Revenue Last Three Years (Year 1)",
-          name: "revenueLastYear1",
+          name: "revenueLastThreeYears[0]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Revenue Last Three Years (Year 2)",
-          name: "revenueLastYear2",
+          name: "revenueLastThreeYears[1]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Revenue Last Three Years (Year 3)",
-          name: "revenueLastYear3",
+          name: "revenueLastThreeYears[2]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Number of Existing Employees",
-          name: "employeesExisting",
+          name: "numberOfEmployees",
           type: "number",
         },
       ],
@@ -118,7 +120,7 @@ export const IdeasCreate = () => {
         {
           component: Textarea,
           label: "Problem Your Business Will Solve",
-          name: "problem",
+          name: "problemSolved",
           rows: 3,
         },
         {
@@ -136,7 +138,7 @@ export const IdeasCreate = () => {
         {
           component: Textarea,
           label: "Market Size and Segments",
-          name: "marketSize",
+          name: "marketSizeSegments",
           rows: 3,
         },
       ],
@@ -188,7 +190,7 @@ export const IdeasCreate = () => {
         {
           component: Textarea,
           label: "Your Advantage from Competition",
-          name: "advantage",
+          name: "advantageOverCompetition",
           rows: 3,
         },
         {
@@ -269,7 +271,7 @@ export const IdeasCreate = () => {
         {
           component: Textarea,
           label: "Key Forecast Assumptions",
-          name: "forecastAssumptions",
+          name: "keyForecastAssumptions",
           rows: 3,
         },
         {
@@ -281,31 +283,31 @@ export const IdeasCreate = () => {
         {
           component: TextInput,
           label: "Revenue Forecast Next 5 Years (Year 1)",
-          name: "revenueYear1",
+          name: "revenueForecastNext5Years[0]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Revenue Forecast Next 5 Years (Year 2)",
-          name: "revenueYear2",
+          name: "revenueForecastNext5Years[1]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Revenue Forecast Next 5 Years (Year 3)",
-          name: "revenueYear3",
+          name: "revenueForecastNext5Years[2]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Revenue Forecast Next 5 Years (Year 4)",
-          name: "revenueYear4",
+          name: "revenueForecastNext5Years[3]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Revenue Forecast Next 5 Years (Year 5)",
-          name: "revenueYear5",
+          name: "revenueForecastNext5Years[4]",
           type: "number",
         },
         {
@@ -317,61 +319,61 @@ export const IdeasCreate = () => {
         {
           component: TextInput,
           label: "Expenses Forecast Next 5 Years (Year 1)",
-          name: "expensesYear1",
+          name: "expensesForecastNext5Years[0]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Expenses Forecast Next 5 Years (Year 2)",
-          name: "expensesYear2",
+          name: "expensesForecastNext5Years[1]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Expenses Forecast Next 5 Years (Year 3)",
-          name: "expensesYear3",
+          name: "expensesForecastNext5Years[2]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Expenses Forecast Next 5 Years (Year 4)",
-          name: "expensesYear4",
+          name: "expensesForecastNext5Years[3]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Expenses Forecast Next 5 Years (Year 5)",
-          name: "expensesYear5",
+          name: "expensesForecastNext5Years[4]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Forecasted Net Profit (or Loss) Next 5 Years (Year 1)",
-          name: "netProfitYear1",
+          name: "forecastedNetProfitNext5Years[0]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Forecasted Net Profit (or Loss) Next 5 Years (Year 2)",
-          name: "netProfitYear2",
+          name: "forecastedNetProfitNext5Years[1]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Forecasted Net Profit (or Loss) Next 5 Years (Year 3)",
-          name: "netProfitYear3",
+          name: "forecastedNetProfitNext5Years[2]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Forecasted Net Profit (or Loss) Next 5 Years (Year 4)",
-          name: "netProfitYear4",
+          name: "forecastedNetProfitNext5Years[3]",
           type: "number",
         },
         {
           component: TextInput,
           label: "Forecasted Net Profit (or Loss) Next 5 Years (Year 5)",
-          name: "netProfitYear5",
+          name: "forecastedNetProfitNext5Years[4]",
           type: "number",
         },
         {
@@ -389,14 +391,14 @@ export const IdeasCreate = () => {
         {
           component: SelectInput,
           label: "Stage of Investment",
-          name: "investmentStage",
+          name: "stageOfInvestment",
           options: stagesOfInvestment,
           rules: { required: "Investment Stage is required" },
         },
         {
           component: SelectInput,
           label: "Type of Funding Requested",
-          name: "fundingType",
+          name: "typeOfFundingRequested",
           options: fundingTypes,
           rules: { required: "Funding Type is required" },
         },
@@ -454,7 +456,7 @@ export const IdeasCreate = () => {
           component: CheckboxInput,
           label:
             "If successfully Funded Through PAVCC, are you willing to allocate 5% Equity to PAVCC?",
-          name: "allocateEquityToPAVCC",
+          name: "willingToAllocateEquityToPAVCC",
           options: [
             { value: "yes", label: "Yes" },
             { value: "no", label: "No" },
@@ -467,7 +469,7 @@ export const IdeasCreate = () => {
           component: CheckboxInput,
           label:
             "If successfully Funded Through PAVCC, are you willing to Allow PAVCC Financial Management Oversight by assigning an PAVCC Auditor or a CFO?",
-          name: "allowPAVCCOversight",
+          name: "willingForFinancialManagementOversight",
           options: [
             { value: "yes", label: "Yes" },
             { value: "no", label: "No" },
@@ -506,14 +508,14 @@ export const IdeasCreate = () => {
         {
           component: TextInput,
           label: "Date",
-          name: "submissionDate",
+          name: "deadline",
           type: "date",
           rules: { required: "Date of submission is required" },
         },
         {
           component: CheckboxInput,
           label: "Review and Edit Application",
-          name: "reviewApplication",
+          name: "reviewAndEditAgreed",
           options: [
             {
               value: "agree",
@@ -571,7 +573,8 @@ export const IdeasCreate = () => {
         }
       );
 
-      console.log(response.data);
+      alert(response.data.message);
+      navigate('/entrepreneur/ideas')
       setSubmissionStatus("Application submitted successfully!");
     } catch (error) {
       console.error(error);

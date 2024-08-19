@@ -134,7 +134,6 @@ export const StartedProcess = () => {
     setPageSize(size);
     setCurrentPage(1); // Reset to first page
   };
-  console.log(ideas);
 
   return (
     <div className="p-6">
@@ -170,23 +169,23 @@ export const StartedProcess = () => {
                 <strong>Problem:</strong> {idea.problemSolved}
               </p>
               <p className="text-sm">
-                <strong>Solution:</strong> {idea.solution}
+                <strong>Solution:</strong> {idea?.solution}
               </p>
             </div>
             <div className="bg-gray-100 p-4 rounded-lg mb-4">
               <h4 className="font-semibold mb-1">
-                {idea.updatedBy.firstName} {idea.updatedBy.lastName}{" "}
-                {idea.updatedBy.middleName}
+                {idea?.updatedBy?.firstName} {idea?.updatedBy?.lastName}{" "}
+                {idea?.updatedBy?.middleName}
               </h4>
               <p className="text-gray-700 mb-1 text-sm">
-                {idea.updatedBy.email}
+                {idea?.updatedBy?.email}
               </p>
               <p className="text-gray-700 mb-1 text-sm">
-                {idea.updatedBy.zipCode} , {idea.updatedBy.city} ,
-                {idea.updatedBy.state} ,{idea.updatedBy.country}
+                {idea?.updatedBy?.zipCode} , {idea?.updatedBy?.city} ,
+                {idea?.updatedBy?.state} ,{idea?.updatedBy?.country}
               </p>
               <p className="text-gray-700 mb-1 text-sm">
-                {idea.updatedBy.phoneNumber}
+                {idea?.updatedBy?.phoneNumber}
               </p>
             </div>
           </div>

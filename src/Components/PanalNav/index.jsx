@@ -24,7 +24,7 @@ export const PanalNav = ({
     setIsNotificationDropdownOpen(false);
   };
 
-  const displayedNotifications = notifications.slice(0, 5);
+  const displayedNotifications = notifications?.slice(0, 5);
 
   return (
     <header className="bg-gray-800 text-white flex justify-between items-center p-4">
@@ -34,7 +34,7 @@ export const PanalNav = ({
           <button onClick={handleNotificationClick} className="relative">
             <NotificationIcon className="text-xl" />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
-              {notifications.length}
+              {notifications?.length}
             </span>
           </button>
           {isNotificationDropdownOpen && (
@@ -45,10 +45,10 @@ export const PanalNav = ({
               ></div>
               <div className="fixed right-10 mt-2 w-72 bg-white text-gray-800 rounded-md shadow-lg z-10 overflow-hidden p-2">
                 <ul>
-                  {displayedNotifications.map((notification) => (
+                  {displayedNotifications?.map((notification) => (
                     <NavLink
-                      to={notification.link}
-                      key={notification.id}
+                      to={notification?.link}
+                      key={notification?.id}
                       className="block p-2 border-b hover:bg-gray-100"
                     >
                       <div className="flex items-center justify-between">
@@ -57,10 +57,10 @@ export const PanalNav = ({
                         </li>
                         <span className="text-xs text-gray-400">2:00</span>
                       </div>
-                      <li className="text-xs">{notification.message}</li>
+                      <li className="text-xs">{notification?.message}</li>
                     </NavLink>
                   ))}
-                  {notifications.length > 5 && (
+                  {notifications?.length > 5 && (
                     <li className="flex flex-col items-center p-2">
                       <NavLink
                         to={notificationLink} // using dynamic link prop

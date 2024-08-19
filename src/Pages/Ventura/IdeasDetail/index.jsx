@@ -157,12 +157,23 @@ export const IdeaDetails = () => {
   const handleStartProcess = () => {
     setIsModalOpen(true);
   };
-
-  const handleConfirm = () => {
+  const token = localStorage.getItem("token");
+  const handleConfirm = async () => {
     setIsModalOpen(false);
     setMessage("Process started successfully!");
-    // You can add additional logic here, like API calls.
-    console.log("Process started for idea:", idea.title);
+    try {
+      const response = await axios.put(
+        `http://localhost:4500/api/v1/ent/entrepreneurs/66be460d3dd417b5f959b647/application-status`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   const handleClose = () => {

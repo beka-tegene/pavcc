@@ -25,7 +25,7 @@ export const Sidebar = ({ links = [] }) => {
           ))}
         </ul>
         <NavLink
-          to={""}
+          to={"/"}
           className={"flex items-center gap-3 p-2 hover:bg-gray-700 rounded"}
         >
           <LuLogOut />

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { back_base_url } from "../../../Lib/config";
 
 
 const NotificationDetail = () => {
@@ -11,7 +12,7 @@ const NotificationDetail = () => {
   }, []);
   const fetchIdeaNotifications = async () => {
     try {
-      const response = await axios.get(`http://localhost:4500/api/v1/not`, {
+      const response = await axios.get(`${back_base_url}/api/v1/not`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

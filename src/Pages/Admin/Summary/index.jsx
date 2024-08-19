@@ -3,6 +3,7 @@ import { FaFileAlt } from "react-icons/fa";
 import { FilterBySelect } from "../../../Components/FilterBySelect";
 import { Pagination } from "../../../Components/Pagination";
 import axios from "axios";
+import { back_base_url } from "../../../Lib/config";
 
 export const IdeaSummary = () => {
   const filters = [
@@ -62,7 +63,7 @@ export const IdeaSummary = () => {
   const fetchIdeas = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs?status=Approved`
+        `${back_base_url}/api/v1/ent/entrepreneurs?status=Approved`
       );
       setIdea(response.data.entrepreneurs);
     } catch (error) {

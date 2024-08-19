@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import IdeaCard from "../../Entrepreneur/IdeaCard";
 import { Pagination } from "../../../Components/Pagination";
 import axios from "axios";
+import { back_base_url } from "../../../Lib/config";
 export const AllIdeas = () => {
   const filters = [
     {
@@ -62,7 +63,7 @@ export const AllIdeas = () => {
   const fetchIdeas = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs`
+        `${back_base_url}/api/v1/ent/entrepreneurs`
       );
       setIdea(response.data.entrepreneurs);
     } catch (error) {

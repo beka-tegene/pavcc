@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NotificationsPage } from "../../../Components/NotificationsPage";
 import axios from "axios";
+import { back_base_url } from "../../../Lib/config";
 
 export const AdminNotification = () => {
   // const notifications = [
@@ -34,7 +35,7 @@ export const AdminNotification = () => {
   }, []);
   const fetchIdeaNotifications = async () => {
     try {
-      const response = await axios.get(`http://localhost:4500/api/v1/not`, {
+      const response = await axios.get(`${back_base_url}/api/v1/not`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -4,6 +4,7 @@ import { ButtonUi } from "../../Components/Button";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { back_base_url } from "../../Lib/config";
 
 export const Landing = () => {
   const { control, handleSubmit } = useForm();
@@ -11,7 +12,7 @@ export const Landing = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        `http://localhost:4500/api/v1/auth/login`,
+        `${back_base_url}/api/v1/auth/login`,
         data
       );
       localStorage.setItem("token", response.data.token);

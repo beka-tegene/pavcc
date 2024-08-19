@@ -3,6 +3,7 @@ import IdeaCard from "../IdeaCard";
 import { useNavigate } from "react-router-dom";
 import { ButtonUi } from "../../../Components/Button";
 import axios from "axios";
+import { back_base_url } from "../../../Lib/config";
 
 export const Ideas = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export const Ideas = () => {
   const fetchIdeas = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/user`,
+        `${back_base_url}/api/v1/ent/user`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

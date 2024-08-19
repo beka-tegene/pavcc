@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ButtonUi } from "../../../Components/Button";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { back_base_url } from "../../../Lib/config";
 
 export const StartedProcessDetail = () => {
   const opportunity = {
@@ -96,7 +97,7 @@ export const StartedProcessDetail = () => {
   const fetchIdeasById = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs/${id}`
+        `${back_base_url}/api/v1/ent/entrepreneurs/${id}`
       );
       const entrepreneur = response.data.entrepreneur;
       setIdeaById(entrepreneur);
@@ -109,7 +110,7 @@ export const StartedProcessDetail = () => {
   const handleSendNotification = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4500/api/v1/not/notifications/send`,
+        `${back_base_url}/api/v1/not/notifications/send`,
         {
           receiverId: ideaById?.updatedBy?._id,
           type: "likePost",

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Switch from "../../../Components/Switch";
 import axios from "axios";
 import { AiOutlineDownload } from "react-icons/ai";
+import { back_base_url } from "../../../Lib/config";
 
 const steps = [
   {
@@ -143,7 +144,7 @@ export const IdeaDetail = () => {
   const fetchIdeasById = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs/${id}`
+        `${back_base_url}/api/v1/ent/entrepreneurs/${id}`
       );
       const entrepreneur = response.data.entrepreneur;
       setIdeaById(entrepreneur);
@@ -157,7 +158,7 @@ export const IdeaDetail = () => {
     try {
       const newStatus = isChecked ? "Rejected" : "Approved";
       await axios.patch(
-        `http://localhost:4500/api/v1/ent/entrepreneurs/${id}/status`,
+        `${back_base_url}/api/v1/ent/entrepreneurs/${id}/status`,
         { status: newStatus },
         {
           headers: {

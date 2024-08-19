@@ -5,6 +5,7 @@ import axios from "axios";
 import { AiOutlineDownload } from "react-icons/ai";
 import { ButtonUi } from "../../../Components/Button";
 import Modal from "../../../Components/Model";
+import { back_base_url } from "../../../Lib/config";
 
 const steps = [
   {
@@ -144,7 +145,7 @@ export const IdeaDetails = () => {
   const fetchIdeasById = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs/${id}`
+        `${back_base_url}/api/v1/ent/entrepreneurs/${id}`
       );
       const entrepreneur = response.data.entrepreneur;
       setIdeaById(entrepreneur);
@@ -162,7 +163,7 @@ export const IdeaDetails = () => {
   const handleConfirm = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:4500/api/v1/ent/entrepreneur/${id}/application-status`,
+        `${back_base_url}/api/v1/ent/entrepreneur/${id}/application-status`,
         {
           isApplication: "In Progress",
         },

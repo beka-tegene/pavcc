@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
 import { useParams } from "react-router-dom";
+import { back_base_url } from "../../../Lib/config";
 
 
 const steps = [
@@ -143,7 +144,7 @@ export const IdeaDetails = () => {
   const fetchIdeasById = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs/${id}`
+        `${back_base_url}/api/v1/ent/entrepreneurs/${id}`
       );
       const entrepreneur = response.data.entrepreneur;
       setIdeaById(entrepreneur);

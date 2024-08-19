@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineDownload } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { ButtonUi } from "../../../Components/Button";
+import { back_base_url } from "../../../Lib/config";
 const steps = [
   {
     title: "Step 2: Revenue and Employees",
@@ -141,7 +142,7 @@ export const StartProcessDetail = () => {
   const fetchIdeasById = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs/${id}`,
+        `${back_base_url}/api/v1/ent/entrepreneurs/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -177,7 +178,7 @@ export const StartProcessDetail = () => {
   const handleConfirm = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:4500/api/v1/ent/entrepreneur/${id}/application-status`,
+        `${back_base_url}/api/v1/ent/entrepreneur/${id}/application-status`,
         {
           isApplication: "Closed",
         },

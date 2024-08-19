@@ -4,6 +4,7 @@ import { FilterBySelect } from "../../../Components/FilterBySelect";
 import { Pagination } from "../../../Components/Pagination";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { back_base_url } from "../../../Lib/config";
 
 export const StartedProcess = () => {
   const navigate = useNavigate();
@@ -101,7 +102,7 @@ export const StartedProcess = () => {
   const fetchIdeas = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs`,
+        `${back_base_url}/api/v1/ent/entrepreneurs`,
         {
           params: {
             status: "Approved",

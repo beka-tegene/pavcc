@@ -8,6 +8,7 @@ import { Textarea } from "../../../Components/Textarea";
 import { CheckboxInput } from "../../../Components/CheckboxInput";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { back_base_url } from "../../../Lib/config";
 const businessSectors = [
   { value: "Agriculture", label: "Agriculture" },
   { value: "Agro-processing", label: "Agro-processing" },
@@ -563,7 +564,7 @@ export const IdeasCreate = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:4500/api/v1/ent/entrepreneurs`,
+        `${back_base_url}/api/v1/ent/entrepreneurs`,
         formData,
         {
           headers: {

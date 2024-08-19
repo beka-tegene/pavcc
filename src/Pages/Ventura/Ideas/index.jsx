@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Pagination } from "../../../Components/Pagination";
 import { FaFileAlt } from "react-icons/fa";
 import axios from "axios";
+import { back_base_url } from "../../../Lib/config";
 
 export const AllIdeas = () => {
   const filters = [
@@ -62,7 +63,7 @@ export const AllIdeas = () => {
   const fetchIdeas = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4500/api/v1/ent/entrepreneurs?status=Approved`
+        `${back_base_url}/api/v1/ent/entrepreneurs?status=Approved`
       );
       setIdea(response.data.entrepreneurs);
     } catch (error) {
